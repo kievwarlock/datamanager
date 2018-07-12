@@ -13,6 +13,8 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+
+
 /**
  * Site controller
  */
@@ -26,9 +28,9 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'rbac'],
                 'rules' => [
-                    [
+                   [
                         'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
@@ -37,6 +39,11 @@ class SiteController extends Controller
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                   [
+                        'actions' => ['rbac'],
+                        'allow' => true,
+                        'roles' => ['admin'],
                     ],
                 ],
             ],
@@ -63,6 +70,36 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+
+
+    public function actionRbac(){
+
+      /*  $admin = Yii::$app->authManager->createRole('admin');
+        $admin->description = 'Администратор';
+        Yii::$app->authManager->add($admin);
+
+        $supervisor = Yii::$app->authManager->createRole('supervisor');
+        $supervisor->description = 'Супервайзер';
+        Yii::$app->authManager->add($supervisor);
+
+        $manager = Yii::$app->authManager->createRole('manager');
+        $manager->description = 'Менеджер';
+        Yii::$app->authManager->add($manager);*/
+
+
+          // Permits
+        /*$permit = Yii::$app->authManager->createPermission('createUser');
+        $permit->description = 'Право на создание юзера';
+        Yii::$app->authManager->add($permit);*/
+
+        /*$userRole = Yii::$app->authManager->getRole('admin');
+        Yii::$app->authManager->assign($userRole, 1);*/
+
+
+        return 'Rbac success end!';
+
     }
 
     /**
