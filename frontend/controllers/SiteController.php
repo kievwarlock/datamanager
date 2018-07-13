@@ -1,10 +1,12 @@
 <?php
 namespace frontend\controllers;
 
+use backend\controllers\MainController;
+use common\models\Group;
+use common\models\GroupAccount;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
@@ -12,13 +14,13 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-
+use app\models\DataUsers;
 
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends MainController
 {
     /**
      * {@inheritdoc}
@@ -28,7 +30,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup', 'rbac'],
+                'only' => ['logout', 'signup', 'rbac','group'],
                 'rules' => [
                    [
                         'actions' => ['signup'],
@@ -45,6 +47,12 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['admin'],
                     ],
+                    [
+                        'actions' => ['group'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+
                 ],
             ],
             'verbs' => [
@@ -249,4 +257,122 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+
+
+    public function actionAdd_user_to_group(){
+
+        if (Yii::$app->request->isAjax) {
+
+            $data = Yii::$app->request->post();
+
+            if( isset($data['account_id']) and !empty($data['account_id']) and
+                isset($data['group_id']) and !empty($data['group_id']) ){
+
+                $GroupAccount = new GroupAccount();
+
+                $GroupAccount->account_id = $data['account_id'];
+                $GroupAccount->group_id = $data['group_id'];
+                if( $GroupAccount->save() ){
+                    return $save_model = 'Success add id = ' . $GroupAccount->id;
+                }else{
+                    return false;
+                }
+
+            }
+
+        }
+        return false;
+
+    }
+    /**
+     * Displays about page.
+     *
+     * @return mixed
+     */
+    public function actionGroup()
+    {
+
+        $DataUsers = new DataUsers();
+
+
+        $users_array = [
+            '3' => '3:z3vf9939hTfqa4FA',
+            '11' => '11:jagt2E61R1ez9L6F',
+            '12' => '12:lL3WPw9riWMukbQB',
+            '4' => '4:1O2iEJ9l7zE6EEWn',
+            '13' => '13:remK264vmMXPcEZb',
+            '5' => '5:cTfbYHjpzUVBPkzG',
+            '6' => '	6:cI2J3Yoar8OeltLl',
+            '7' => '7:p80InvPzd0W928wA',
+            '8' => '8:uw7xcF5TL8Qwaql3',
+            '9' => '9:HWL1ijSqCk9uiSze',
+        ];
+        $users = false;
+        if( $users_array ){
+            foreach ($users_array as $user_id => $user_token) {
+                $users[] = json_decode( $DataUsers->getUserProfile($user_id, $user_token) , true);
+            }
+        }
+
+
+
+        $save_model = false;
+        $model = new Group();
+
+        if( Yii::$app->request->post() ){
+            $post_group = Yii::$app->request->post();
+            //var_dump($post_group);
+            $post_group["Group"]['owner_id'] = Yii::$app->user->id;
+
+            if($model->load( $post_group ) && $model->save()){
+                $save_model = 'Success save with id = ' . $model->id;
+            }
+
+        }
+
+        if( Yii::$app->user->can('admin') ){
+            $where = [];
+        }else{
+            $where = ['owner_id' => Yii::$app->user->id];
+        }
+
+
+        $sql = 'SELECT DISTINCT(account_id),owner_id FROM `group` AS g  JOIN `group_account` AS ga ON ga.group_id = g.id ';
+
+        $users_select = GroupAccount::findBySql($sql)->asArray()->all();
+
+   /*     $users_select = Group::find()
+            ->with([
+            'groupAccounts' => function($query) {
+                //$query->addSelect(['account_id']);
+            },
+            ])
+            ->asArray()
+            ->where( 'owner_id != ' . Yii::$app->user->id )
+            ->all();*/
+
+
+        $group_list = Group::find()
+        ->with(['owner' => function($query) {
+            $query->addSelect(['id', 'username']);
+            },
+            'groupAccounts' => function($query) {
+                $query->addSelect(['group_id', 'account_id']);
+            },
+            ])
+            ->asArray()
+            ->where( $where )
+            ->all();
+
+        return $this->render('group', [
+            'group_list' => $group_list,
+            'model' => $model,
+            'return' => $save_model,
+            'users' => $users,
+            'all_users' => $users_select
+        ]);
+    }
+
+
 }
