@@ -57,6 +57,7 @@ if( $users ){
                     $tab_id = 0;
                     foreach ($group_list as $group_item ) {
                         $tab_id++;
+
                         ?>
                         <div role="tabpanel" class="tab-pane <?= ($tab_id == 1)? 'active' : ''?>" id="group<?=$tab_id?>">
                             <div class="well well-lg">
@@ -71,22 +72,40 @@ if( $users ){
                             <div class="well well-lg">
 
                                 <?php
-                                if( isset($group_item['groupAccounts']) and !empty($group_item['groupAccounts']) ){
-                                    foreach ($group_item['groupAccounts'] as $groupAccount) {
-                                        ?>
-                                        <div>
-                                            <h4>
-                                                Phone:<b>
-                                                     <?=$all_users_array[$groupAccount['account_id']]['phoneNumber']?>
-                                                </b>
-                                            </h4>
-                                            <b>ID:</b> <?=$all_users_array[$groupAccount['account_id']]['account_id']?><br>
-                                            <b>Name:</b> <?=$all_users_array[$groupAccount['account_id']]['fullName']?><br>
-                                        </div>
-                                        <hr>
-                                        <?php
+
+
+                                    $data_array_user = '';
+                                    if( isset($users) and !empty($users)  ){
+
+                                        foreach ( $users as $user ) {
+                                            if( isset($without_acc) and !empty($without_acc)   ){
+                                                if( !in_array( $user['id'], $without_acc )){
+                                                    $data_array_user[ $user['id'] ] = $user['phoneNumber'] ;
+                                                }
+                                            }else{
+                                                $data_array_user[ $user['id'] ] = $user['phoneNumber'] ;
+                                            }
+
+                                        }
+
+
                                     }
-                                }
+
+
+                                    $data_array_user_selected = '';
+                                    foreach ($group_item['groupAccounts'] as $groupAccount) {
+                                        $data_array_user_selected[] = $all_users_array[$groupAccount['account_id']]['account_id'];
+                                    }
+                                    echo '<label class="control-label">Users</label>';
+                                    echo \kartik\select2\Select2::widget([
+                                        'name' => 'state_2',
+                                        'value' => $data_array_user_selected,
+                                        'data' => $data_array_user,
+                                        'options' => ['multiple' => true, 'placeholder' => 'Select states ...']
+                                    ]);
+
+
+
                                 ?>
 
                             </div>
@@ -115,7 +134,7 @@ if( $users ){
                                         echo $user['id'] . '<br>';
                                         if( isset($without_acc) and !empty($without_acc)   ){
                                             if( !in_array( $user['id'], $without_acc )){
-                                                $user_select .= '<option value="' . $user['id'] . '">ID:' .  $user['id']  . ' | '  . $user['phoneNumber'] . ' : ' . $user['fullName'] . '</option>';
+                                               $user_select .= '<option value="' . $user['id'] . '">ID:' .  $user['id']  . ' | '  . $user['phoneNumber'] . ' : ' . $user['fullName'] . '</option>';
                                             }
                                         }else{
                                             $user_select .= '<option value="' . $user['id'] . '">ID:' .  $user['id']  . ' | '  . $user['phoneNumber'] . ' : ' . $user['fullName'] . '</option>';

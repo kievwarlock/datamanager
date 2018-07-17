@@ -45,6 +45,7 @@ class User extends \yii\db\ActiveRecord
                 $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
                 $this->status = 10;
                 Yii::$app->session->setFlash('success', 'Запись создана');
+
             } else {
 
                 $status = 'Запись обновлена!';
@@ -65,13 +66,19 @@ class User extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         if( isset($this->newrole) ){
-            $new = AuthAssignment::findOne(['user_id' => $this->id ]);
-            if( !$new ){
-                $new = new AuthAssignment();
-                $new->user_id = $this->id;
+
+            if ($insert) {
+                $model_auth =  new AuthAssignment();
+                $model_auth->user_id = $this->id;
+                $model_auth->item_name = $this->newrole;
+                $model_auth->save();
+            }else{
+                $model_auth = $this->authAssignment;
+                $model_auth->item_name = $this->newrole;
+                $model_auth->update();
             }
-            $new->item_name = $this->newrole;
-            $new->save();
+
+
         }
 
     }
