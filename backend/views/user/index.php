@@ -28,17 +28,18 @@ $this->params['breadcrumbs'][] = $this->title;
             //'password_hash',
             //'password_reset_token',
             'email:email',
+            'role.description',
             //'status',
             //'created_at',
             //'updated_at',
-            [
+           /* [
                 'label'=>'Role',
                 'format'=>'text', // Возможные варианты: raw, html
                 'content'=>function($data){
                     $userRole = array_keys( Yii::$app->authManager->getRolesByUser($data->id) );
                     return $userRole[0];
                 },
-            ],
+            ],*/
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

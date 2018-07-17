@@ -55,8 +55,8 @@ class AuthItem extends \yii\db\ActiveRecord
         return [
             'name' => 'Name',
             'type' => 'Type',
-            'description' => 'Description',
-            'rule_name' => 'Rule Name',
+            'description' => 'Роль',
+            'rule_name' => 'Rule ID',
             'data' => 'Data',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

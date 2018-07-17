@@ -78,27 +78,12 @@ class UserController extends MainController
     {
         $model = new User();
 
-        $user_role = new DynamicModel(['user_role']);
-        $post_data = Yii::$app->request->post();
-
-
-        if ($model->load( $post_data ) && $model->save()) {
-
-            if( $model->id ){
-                if( isset($post_data["DynamicModel"]) and isset($post_data["DynamicModel"]['user_role']) and !empty($post_data["DynamicModel"]['user_role']) ){
-                    $userDefaultRole = Yii::$app->authManager->getRole($post_data["DynamicModel"]['user_role']);
-                    Yii::$app->authManager->assign($userDefaultRole, $model->id);
-                }
-            }
-
+        if ($model->load( Yii::$app->request->post() ) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-
-
         return $this->render('create', [
             'model' => $model,
-            'user_role' => $user_role
         ]);
     }
 
@@ -113,44 +98,12 @@ class UserController extends MainController
     {
         $model = $this->findModel($id);
 
-        $user_role = new DynamicModel(['user_role', 'new_pass']);
-
-
-
-        $post_data = Yii::$app->request->post();
-        if( isset($post_data["DynamicModel"]['new_pass'])  and !empty($post_data["DynamicModel"]['new_pass'])   ){
-            $post_data ["User"]['password_hash'] = $post_data["DynamicModel"]['new_pass'];
-        }
-        if ($model->load( $post_data ) && $model->save()) {
-
-            if( $model->id ){
-                if( isset($post_data["DynamicModel"]) and isset($post_data["DynamicModel"]['user_role']) and !empty($post_data["DynamicModel"]['user_role']) ){
-                    $userDefaultRole = Yii::$app->authManager->getRole($post_data["DynamicModel"]['user_role']);
-
-                    $old_user_role = array_keys(Yii::$app->authManager->getRolesByUser( $model->id ))[0];
-
-                    if( isset( $old_user_role )){
-                        $old_role = Yii::$app->authManager->getRole($old_user_role);
-                        Yii::$app->authManager->revoke($old_role, $model->id);
-                    }
-
-                    Yii::$app->authManager->assign($userDefaultRole, $model->id);
-
-                }
-            }
-
+        if ($model->load( Yii::$app->request->post() ) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
-/*
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }*/
 
         return $this->render('update', [
             'model' => $model,
-            'user_role' => $user_role,
-            //'new_pass' => $new_password,
         ]);
     }
 

@@ -35,19 +35,27 @@ $this->params['breadcrumbs'][] = $this->title;
             //'password_hash',
             //'password_reset_token',
             'email:email',
+            'role.description',
             //'status',
             //'created_at',
             //'updated_at',
-            [                      // the owner name of the model
+            /*[                      // the owner name of the model
                 'label' => 'Role',
                 'value' => function($data){
                     $userRole = array_keys( Yii::$app->authManager->getRolesByUser($data->id) );
+                   // return $data->getRole()->asArray()->one()['description'];
                     return $userRole[0];
                 },
-            ]
+            ]*/
         ],
 
 
     ]) ?>
-
+    <p>
+        <?php
+        //var_dump($model->getAuthAssignment()->asArray()->one() );
+        //echo '<hr>';
+        //var_dump( $model->getRole()->asArray()->one() );
+        ?>
+    </p>
 </div>

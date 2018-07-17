@@ -355,11 +355,11 @@ class SiteController extends MainController
 
         $group_list = Group::find()
         ->with(['owner' => function($query) {
-            $query->addSelect(['id', 'username']);
+                $query->addSelect(['id', 'username']);
             },
-            'groupAccounts' => function($query) {
-                $query->addSelect(['group_id', 'account_id']);
-            },
+                'groupAccounts' => function($query) {
+                    $query->addSelect(['group_id', 'account_id']);
+                },
             ])
             ->asArray()
             ->where( $where )

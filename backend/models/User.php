@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use common\models\AuthAssignment;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -22,6 +23,9 @@ class User extends \yii\db\ActiveRecord
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+
+    public $newrole;
+    public $newpass;
 
     public function behaviors()
     {
@@ -44,8 +48,9 @@ class User extends \yii\db\ActiveRecord
             } else {
 
                 $status = 'Запись обновлена!';
-                if( isset( $this->password_hash ) and !empty($this->password_hash) ){
-                    $this->password_hash = Yii::$app->security->generatePasswordHash($this->password_hash);
+
+                if( isset( $this->newpass ) and !empty($this->newpass) ){
+                    $this->password_hash = Yii::$app->security->generatePasswordHash($this->newpass);
                     $status .= 'Пароль обновлён!';
                 }
                 Yii::$app->session->setFlash('success', $status);
@@ -59,10 +64,21 @@ class User extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes){
         parent::afterSave($insert, $changedAttributes);
 
+        if( isset($this->newrole) ){
+            $new = AuthAssignment::findOne(['user_id' => $this->id ]);
+            if( !$new ){
+                $new = new AuthAssignment();
+                $new->user_id = $this->id;
+            }
+            $new->item_name = $this->newrole;
+            $new->save();
+        }
 
     }
 
-
+    public function afterFind(){
+        $this->newrole = $this->role;
+    }
 
 
     /**
@@ -88,6 +104,7 @@ class User extends \yii\db\ActiveRecord
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
+            [['newrole','newpass' ], 'safe'],
         ];
     }
 
@@ -106,6 +123,8 @@ class User extends \yii\db\ActiveRecord
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'newrole' => 'Роль пользователя',
+            'newpass' => 'Новый пароль'
         ];
     }
 
@@ -123,6 +142,16 @@ class User extends \yii\db\ActiveRecord
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
+
+    public function getAuthAssignment()
+    {
+        return $this->hasOne(AuthAssignment::className(), ['user_id' => 'id']);
+    }
+
+    public function getRole()
+    {
+        return $this->hasOne(AuthItem::className(), ['name' => 'item_name'])->via('authAssignment');
+    }
 
 
 }

@@ -36,6 +36,7 @@ if( $users ){
             <ul class="nav nav-tabs" role="tablist">
                 <?php
                 if( isset($group_list) ) {
+
                     $tab_id = 0;
                     foreach ($group_list as $group_item ) {
                         $tab_id++;
@@ -61,6 +62,7 @@ if( $users ){
                             <div class="well well-lg">
                                 <h3>Group name: <b><?=$group_item['name']?></b></h3>
                                 <p>
+
                                     Owner: <span class="label label-primary"><?=$group_item["owner"]['username']?></span><br>
                                     Created at: <i><?= date("F j, Y, g:i a", $group_item['created_at']); ?></i>
                                 </p>
@@ -74,7 +76,9 @@ if( $users ){
                                         ?>
                                         <div>
                                             <h4>
-                                                <?=$all_users_array[$groupAccount['account_id']]['phoneNumber']?>
+                                                Phone:<b>
+                                                     <?=$all_users_array[$groupAccount['account_id']]['phoneNumber']?>
+                                                </b>
                                             </h4>
                                             <b>ID:</b> <?=$all_users_array[$groupAccount['account_id']]['account_id']?><br>
                                             <b>Name:</b> <?=$all_users_array[$groupAccount['account_id']]['fullName']?><br>
