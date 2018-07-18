@@ -30,7 +30,7 @@
                 'items' => [
                     ['label' => 'Menu', 'options' => ['class' => 'header']],
                     ['label' => 'Users', 'icon' => 'user', 'url' => ['/user/index']],
-
+                    ['label' => 'Groups', 'icon' => 'list', 'url' => ['/group/index']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
 
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
