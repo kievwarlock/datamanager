@@ -12,13 +12,20 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        //'https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.css',
+        //'css/crop/croppie.css',
+        'css/layout/main.css',
+        'css/layout/media.css',
     ];
     public $js = [
-        'js/init.js',
+       // 'https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.js',
+       // 'js/crop/croppie.min.js',
+        //'js/crop/croppie.min.js',
+        //'js/upload-images.js',
+        'js/group.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
     ];
 }

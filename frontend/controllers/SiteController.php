@@ -290,7 +290,7 @@ class SiteController extends MainController
      *
      * @return mixed
      */
-    public function actionGroup()
+    public function actionGroup123()
     {
 
         $DataUsers = new DataUsers();
@@ -308,10 +308,11 @@ class SiteController extends MainController
             '8' => '8:uw7xcF5TL8Qwaql3',
             '9' => '9:HWL1ijSqCk9uiSze',
         ];
+        return 'Need new api';
         $users = false;
         if( $users_array ){
             foreach ($users_array as $user_id => $user_token) {
-                $users[] = json_decode( $DataUsers->getUserProfile($user_id, $user_token) , true);
+                //$users[] = json_decode( $DataUsers->getUserProfile($user_id, $user_token) , true);
             }
         }
 

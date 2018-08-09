@@ -42,7 +42,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '' => 'site/index',
+                '' => 'group/index',
                 '<action>'=>'site/<action>',
                 //'<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
             ],
