@@ -342,7 +342,7 @@ class GroupController extends MainController
                 if( in_array( $user['id'], array_column($current_user_accounts, 'account_id') ) ) {
                     $profile = $userDataModel->getUserProfile($user['id'], $user['token']);
                     if ($profile['status'] === true) {
-                        $users_profile[] = $profile['data'];
+                        $users_profile[$user['token']] = $profile['data'];
                     }
                 }else{
 
@@ -409,6 +409,51 @@ class GroupController extends MainController
 
 
     }
+
+    public function actionCreate(){
+
+        if (Yii::$app->request->isAjax) {
+
+            $return_array = false;
+            $data = Yii::$app->request->post();
+
+            if ( $data and isset($data['group-name']) and isset($data['accounts']) ) {
+
+                $new_group = new Group();
+                $new_group->name = $data['group-name'];
+                $new_group->owner_id = Yii::$app->user->id;
+
+                if( $new_group->save() ){
+                    $return_array['group']['id'] = $new_group->id;
+                    $new_group_id = $new_group->id;
+
+                    if( is_array($data['accounts'] )){
+                        foreach ($data['accounts'] as $account) {
+                            $GroupAccount = new GroupAccount();
+                            $GroupAccount->account_id = $account;
+                            $GroupAccount->group_id = $new_group_id;
+
+                            if( $GroupAccount->save() ){
+                                $return_array['account_attach'][$account] = $GroupAccount->id;
+                            }else{
+                                return false;
+                            }
+
+                        }
+                    }
+
+                }else{
+                    return false;
+                }
+
+
+                return true;
+
+            }
+        }
+
+    }
+
 
 
     public function actionGroup()

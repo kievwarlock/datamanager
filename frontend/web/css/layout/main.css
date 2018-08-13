@@ -205,7 +205,7 @@ body {
     font-size: 16px;
 }
 
-.save-user-profile-status {
+.add-group-status {
     display: none;
     padding: 10px;
     margin: 10px 0px;
@@ -954,4 +954,10 @@ table.table tr.active td , table.table tr.active th {
 .ajax-preloader img {
     max-width: 200px;
     height:auto;;
+}
+.account-avatar {
+    max-width: 100%;
+    height:auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

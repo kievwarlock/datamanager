@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $group_id
- * @property int $account_id
+ * @property text $account_id
  *
  * @property Group $group
  */
@@ -29,8 +29,9 @@ class GroupAccount extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['group_id', 'account_id'], 'integer'],
+            [['group_id'], 'integer'],
             [['account_id'], 'required'],
+            [['account_id'], 'safe'],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
         ];
     }

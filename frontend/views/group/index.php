@@ -22,7 +22,7 @@ $this->title = 'Group';
             </ul>
             <div class="group-account-tab-nav">
                 <div class="group-account-tab-nav-btn window-btn"  data-toggle="modal" data-target=".bs-example-modal-lg" >Add account</div>
-                <div class="group-account-tab-nav-btn window-btn">Group</div>
+                <div class="group-account-tab-nav-btn window-btn open-modal-new-group"   >Group</div>
                 <div class="group-account-tab-nav-btn window-btn window-btn-danger unlink-account-to-user">Unlink</div>
             </div>
             <!-- Tab panes -->
@@ -59,7 +59,7 @@ $this->title = 'Group';
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php $cnt = 1; foreach ( $accounts as $account) { ?>
+                                <?php $cnt = 1; foreach ( $accounts as $token => $account) { ?>
                                     <tr>
                                         <th scope="row">
                                             <div class="account-check">
@@ -75,7 +75,7 @@ $this->title = 'Group';
                                         <td><?=$account['phoneNumber']?></td>
                                         <td><?=$account['locale']?></td>
                                         <td><?=$account['city']?></td>
-                                        <td><a href="#">View Details</a></td>
+                                        <td><a href="#" class="view-user-profile" data-id="<?=$account['id']?>" data-token="<?=$token?>" >View Details</a></td>
 
                                     </tr>
                                 <?php } ?>
@@ -148,7 +148,7 @@ $this->title = 'Group';
 </div>
 
 
-<!-- Large modal -->
+<!-- Users accounts list modal -->
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -207,6 +207,43 @@ $this->title = 'Group';
                 <?php } ?>
             </div>
 
+        </div>
+    </div>
+</div>
+
+
+<!--view-user-profile  Modal -->
+<div class="modal fade" id="view-user-profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<!-- Add group  -->
+
+<div class="modal fade add-group" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add selected accounts to group</h4>
+            </div>
+            <div class="modal-body">
+
+                <p class="add-group-status bg-success">Group added!</p>
+                <p class="add-group-status bg-danger">Error! Plz try again!</p>
+
+
+                <label for="group-name"> Group name:</label>
+                <input type="text" id="group-name" class="window-input" name="group-name" placeholder="Enter group name" />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="group-account-tab-nav-btn window-btn window-btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="group-account-tab-nav-btn window-btn create-new-group">Save group</button>
+            </div>
         </div>
     </div>
 </div>

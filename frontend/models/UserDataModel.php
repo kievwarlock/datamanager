@@ -2,9 +2,7 @@
 namespace app\models;
 
 use Yii;
-use yii\base\Model;
-use app\models\Datausers;
-use yii\base\ErrorException;
+
 
 
 class UserDataModel extends  ServerModel {
