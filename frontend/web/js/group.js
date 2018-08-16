@@ -435,4 +435,47 @@ $(function () {
 
 
 
+
+    $('body').on('dblclick', '.tab-item-name', function (e) {
+        e.preventDefault();
+        var nameItem = $(this).text();
+        $(this).parent().html('<input type="text" class="tab-item-name-edit" value="'+ nameItem +'" >');
+    });
+    $('body').on('click', function(event){
+        if( event.target.className != 'tab-item-name-edit') {
+            if( $('.tab-item-name-edit').length > 0 ){
+                $('.tab-item-name-edit').each(function(){
+                    var nameItem = $(this).val();
+                    $(this).parent().html('<div class="tab-item-name" >'+ nameItem +'</div>');
+                })
+            }
+        }
+    })
+
+
+
+    $('body').on('click', '.add-post-tab', function (e) {
+        e.preventDefault();
+
+        var tabSelector = $('.post-tab');
+        var countTabs = tabSelector.find('.nav.nav-tabs li').length;
+
+        var labelContentTab = '<li role="presentation" >' +
+            '<a href="#post_'+countTabs+'" aria-controls="post_'+countTabs+'" role="tab" data-toggle="tab"><div class="tab-item-name">Post name '+countTabs+'</div></a>' +
+            '</li>';
+
+        var tabContent = '<div role="tabpanel" class="tab-pane" id="post_'+countTabs+'">'+  tabSelector.find('.tab-content .tab-pane:nth-child(1)').html() +'</div>';
+
+
+        $(this).parent().before(labelContentTab);
+        tabSelector.find('.tab-content').append(tabContent);
+
+
+
+
+    });
+
+
+
+
 })

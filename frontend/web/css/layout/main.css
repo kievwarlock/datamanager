@@ -995,5 +995,128 @@ table.table tr.active td , table.table tr.active th {
 }
 
 
+.group-tab-content {
 
+    padding: 10px;
+
+    position: relative;
+
+    z-index: 10;
+
+    background: #fff;
+
+    box-shadow: 0px 3px 3px 1px #ccc;
+}
+.group-tab-file-block {
+
+    display: flex;
+
+    padding: 10px 0px;
+
+    align-items: flex-start;
+}
+.group-tab-file-preview-image {
+
+    width: 250px;
+
+    height: 250px;
+
+    border-radius: 5px;
+
+    margin-right: 20px;
+
+    background: url(../../img/placeholder.jpg);
+
+    background-size: cover;
+}
+.group-tab-file-preview-image-placeholder {
+
+}
+.group-tab-file-input-block {
+
+    position: relative;
+}
+.group-tab-file-input {
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    opacity: 0;
+
+    z-index: 10;
+}
+.group-tab-file-input-download {
+
+}
+.group-tab-main {
+
+}
+.group-tab-main-top {
+
+    display: flex;
+
+    margin-left: -5px;
+
+    margin-right: -5px;
+}
+.group-tab-select-item {
+
+    width: 100%;
+
+    padding: 5px;
+}
+
+.group-tab-select-item select{
+
+    padding: 6px;
+
+    border: 1px solid #c7c7c7;
+
+    width: 100%;
+
+    border-radius: 5px;
+
+    outline: none;
+}
+.group-tab-main-text-block {
+
+}
+.group-tab-textarea {
+    margin: 10px 0px;
+    position: relative;
+}
+.group-tab-textarea textarea {
+    padding: 6px;
+    border: 1px solid #c7c7c7;
+    width: 100%;
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+}
+
+.group-tab-textarea-lang {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    color: #c7c7c7;
+    font-size: 14px;
+}
+
+.group-tab-footer {
+
+}
+
+.add-tab-item {
+    background: url(../../img/add-icon.png);
+    width: 20px;
+    height: 20px;
+    display: block;
+}
 

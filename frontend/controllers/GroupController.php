@@ -140,6 +140,8 @@ class GroupController extends MainController
 
             if ( $data and isset($data['group-name']) ) {
 
+                $tab = 'all_groups';
+
                 $new_group = new Group();
                 $new_group->name = $data['group-name'];
                 $new_group->owner_id = Yii::$app->user->id;
@@ -147,6 +149,8 @@ class GroupController extends MainController
                 if( $new_group->save() ){
 
                     if( isset($data['accounts']) ) {
+
+                        $tab = 'all_accounts';
                         $return_array['group']['id'] = $new_group->id;
                         $new_group_id = $new_group->id;
 
@@ -170,8 +174,8 @@ class GroupController extends MainController
                     return false;
                 }
 
+                return $this->renderPage( $tab);
 
-                return $this->renderPage();
 
             }
         }
@@ -202,7 +206,7 @@ class GroupController extends MainController
                     }
                 }
 
-                return $this->renderPage();
+                return $this->renderPage( 'all_groups' );
 
             }
 
@@ -266,7 +270,7 @@ class GroupController extends MainController
                     }
                 }
 
-                return $this->renderPage();
+                return $this->renderPage( 'all_groups' );
 
             }
 
@@ -463,9 +467,10 @@ class GroupController extends MainController
     }
 
 
-    private function renderPage(){
+    private function renderPage( $tab = 'all_accounts' ){
 
         $params = [];
+        $params['tab'] = $tab;
 
         $accounts = $this->getAccounts();
         if( is_array($accounts) ){
