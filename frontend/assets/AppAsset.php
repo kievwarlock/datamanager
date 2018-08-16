@@ -22,7 +22,9 @@ class AppAsset extends AssetBundle
        // 'js/crop/croppie.min.js',
         //'js/crop/croppie.min.js',
         //'js/upload-images.js',
-        'js/group.js',
+       'js/drag/Sortable.min.js',
+       'js/drag/app.js',
+       'js/group.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
