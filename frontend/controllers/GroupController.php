@@ -69,6 +69,56 @@ class GroupController extends MainController
         return $this->renderPage();
     }
 
+    public function actionAddPostTab(){
+        if (Yii::$app->request->isAjax) {
+
+            $data = Yii::$app->request->post();
+
+            if( isset( $data['count']) ){
+
+
+
+                return $this->renderAjax('tab/post-tab.php',[
+                    'count' =>  $data['count'],
+                    'groups' => Group::find()->where([ 'owner_id' => Yii::$app->user->id ] )->asArray()->all()
+                ]);
+            }
+
+
+        }
+
+        return false;
+
+
+
+    }
+
+
+
+
+
+    public function actionGroupList()
+    {
+
+        if (Yii::$app->request->isAjax) {
+
+            $data = Yii::$app->request->get();
+            if(isset($data['group'])){
+                $return = json_encode(Group::find()->where(['owner_id' => Yii::$app->user->id])->andWhere( ['like', 'name', $data['group'] ]  )->asArray()->all());
+
+            }else{
+                $return = json_encode(Group::find()->where(['owner_id' => Yii::$app->user->id])->asArray()->all());
+            }
+            return $return;
+       }
+
+       return false;
+    }
+
+
+
+
+
     // UNLink accounts to group
     public function actionUnlink()
     {
@@ -491,7 +541,7 @@ class GroupController extends MainController
 
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderAjax('index',$params );
+            return $this->renderAjax('block-group.php',$params );
         }else{
             return $this->render('index',$params );
         }

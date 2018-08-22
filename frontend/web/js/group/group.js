@@ -2,6 +2,7 @@ $(function () {
     "use strict";
 
 
+    // Input checker in table
     $('body').on( 'change', '.account-check input', function () {
 
         if( $(this).val() == 'set-all' ){
@@ -23,9 +24,7 @@ $(function () {
 
     });
 
-
-
-
+    // link account to user
     $('body').on('click', '.attach-account-to-user', function () {
 
 
@@ -53,7 +52,7 @@ $(function () {
                     if( res ){
                         $('.bs-example-modal-lg').modal('hide');
                         setTimeout(function () {
-                            $('.content-window-main').html(res);
+                            $('.content-window-main .group-account-block').html(res);
                         } , 400);
                     }
 
@@ -67,6 +66,7 @@ $(function () {
 
     })
 
+    // unlink account from user
     $('body').on('click', '.unlink-account-to-user', function () {
 
 
@@ -89,8 +89,9 @@ $(function () {
                 success: function(res){
 
                     $('.ajax-preloader').removeClass('active');
+
                     if( res ){
-                        $('.content-window-main').html(res);
+                        $('.content-window-main .group-account-block').html(res);
                     }
 
                 },
@@ -104,9 +105,8 @@ $(function () {
     })
 
 
-
     // todo: change class name
-
+    // Open modal for create new group
     $('body').on('click', '.open-modal-new-group', function () {
 
         var selectedAccounts = $('.unlink-account-to-user-form input[name="accounts"]:checked');
@@ -119,7 +119,7 @@ $(function () {
 
     });
 
-
+    // create new group with attched accounts
     $('body').on('click', '.create-new-group', function () {
 
         $('.add-group-status.bg-success').hide();
@@ -158,7 +158,7 @@ $(function () {
 
                         $('.add-group').modal('hide');
                         setTimeout(function () {
-                            $('.content-window-main').html(res);
+                            $('.content-window-main .group-account-block').html(res);
                         } , 400);
 
                     }else{
@@ -176,7 +176,7 @@ $(function () {
 
     })
 
-
+    // create new empty group
     $('body').on('click', '.new-group', function () {
 
         $('.add-group-status.bg-success').hide();
@@ -206,7 +206,7 @@ $(function () {
                         $('.add-new-group').modal('hide');
 
                         setTimeout(function () {
-                            $('.content-window-main').html(res);
+                            $('.content-window-main .group-account-block').html(res);
                             setTimeout(function () {
                                 $('#groups-tab a[aria-controls="all_groups"]').tab('show');
                             } , 100 );
@@ -227,36 +227,9 @@ $(function () {
 
     })
 
-    function loadProfile( userId, userToken ){
 
 
-        $('.ajax-preloader').addClass('active');
-
-        $.ajax({
-            url: '/user/view/',
-            type: 'POST',
-            data: {
-                user_id: userId,
-                user_token: userToken,
-            },
-            success: function(res){
-
-                $('.ajax-preloader').removeClass('active');
-                if( res ){
-                    $('#view-user-profile .modal-content').html(res);
-                    $('#view-user-profile').modal('show');
-                }
-
-            },
-            error: function(){
-                $('.ajax-preloader').removeClass('active');
-                alert('Error!');
-
-            }
-        });
-    }
-
-
+    // view user profile
     $('body').on('click', '.view-user-profile', function(e){
 
         e.preventDefault();
@@ -269,7 +242,7 @@ $(function () {
 
     })
 
-
+    // view group accounts
     $('body').on('click', '.view-group', function(e){
 
         e.preventDefault();
@@ -323,9 +296,7 @@ $(function () {
 
     })
 
-
     // save edit changes group
-
     $('body').on('click', '.save-edit-group', function () {
 
 
@@ -364,7 +335,7 @@ $(function () {
                         $('#view-group-modal').modal('hide');
 
                         setTimeout(function () {
-                            $('.content-window-main').html(res);
+                            $('.content-window-main .group-account-block').html(res);
                             setTimeout(function () {
                                 $('#groups-tab a[aria-controls="all_groups"]').tab('show');
                             } , 100 );
@@ -386,10 +357,7 @@ $(function () {
 
     })
 
-
-
     // Delete selected groups
-
     $('body').on('click', '.delete-group', function () {
 
 
@@ -414,7 +382,7 @@ $(function () {
 
                     $('.ajax-preloader').removeClass('active');
                     if( res ){
-                        $('.content-window-main').html(res);
+                        $('.content-window-main .group-account-block').html(res);
                         setTimeout(function () {
                             $('#groups-tab a[aria-controls="all_groups"]').tab('show');
                         } , 100);
@@ -434,47 +402,34 @@ $(function () {
     })
 
 
+    function loadProfile( userId, userToken ){
 
 
-    $('body').on('dblclick', '.tab-item-name', function (e) {
-        e.preventDefault();
-        var nameItem = $(this).text();
-        $(this).parent().html('<input type="text" class="tab-item-name-edit" value="'+ nameItem +'" >');
-    });
-    $('body').on('click', function(event){
-        if( event.target.className != 'tab-item-name-edit') {
-            if( $('.tab-item-name-edit').length > 0 ){
-                $('.tab-item-name-edit').each(function(){
-                    var nameItem = $(this).val();
-                    $(this).parent().html('<div class="tab-item-name" >'+ nameItem +'</div>');
-                })
+        $('.ajax-preloader').addClass('active');
+
+        $.ajax({
+            url: '/user/view/',
+            type: 'POST',
+            data: {
+                user_id: userId,
+                user_token: userToken,
+            },
+            success: function(res){
+
+                $('.ajax-preloader').removeClass('active');
+                if( res ){
+                    $('#view-user-profile .modal-content').html(res);
+                    $('#view-user-profile').modal('show');
+                }
+
+            },
+            error: function(){
+                $('.ajax-preloader').removeClass('active');
+                alert('Error!');
+
             }
-        }
-    })
-
-
-
-    $('body').on('click', '.add-post-tab', function (e) {
-        e.preventDefault();
-
-        var tabSelector = $('.post-tab');
-        var countTabs = tabSelector.find('.nav.nav-tabs li').length;
-
-        var labelContentTab = '<li role="presentation" >' +
-            '<a href="#post_'+countTabs+'" aria-controls="post_'+countTabs+'" role="tab" data-toggle="tab"><div class="tab-item-name">Post name '+countTabs+'</div></a>' +
-            '</li>';
-
-        var tabContent = '<div role="tabpanel" class="tab-pane" id="post_'+countTabs+'">'+  tabSelector.find('.tab-content .tab-pane:nth-child(1)').html() +'</div>';
-
-
-        $(this).parent().before(labelContentTab);
-        tabSelector.find('.tab-content').append(tabContent);
-
-
-
-
-    });
-
+        });
+    }
 
 
 

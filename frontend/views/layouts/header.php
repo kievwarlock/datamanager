@@ -21,12 +21,12 @@
 
                 </div>
                 <div class="header-info-user">
-                    <div class="header-info-user-image">
+                    <!--<div class="header-info-user-image">
                         <img src="/frontend/web/img/user-avatar.jpg" alt="">
                     </div>
                     <div class="header-info-user-name">
                         Admin
-                    </div>
+                    </div>-->
                     <?php
                     if(Yii::$app->user->isGuest){
 
